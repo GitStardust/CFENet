@@ -23,12 +23,15 @@ else:
     import xml.etree.ElementTree as ET
 
 
+# VOC_CLASSES = ( '__background__', # always index 0
+    # 'aeroplane', 'bicycle', 'bird', 'boat',
+    # 'bottle', 'bus', 'car', 'cat', 'chair',
+    # 'cow', 'diningtable', 'dog', 'horse',
+    # 'motorbike', 'person', 'pottedplant',
+    # 'sheep', 'sofa', 'train', 'tvmonitor')
+
 VOC_CLASSES = ( '__background__', # always index 0
-    'aeroplane', 'bicycle', 'bird', 'boat',
-    'bottle', 'bus', 'car', 'cat', 'chair',
-    'cow', 'diningtable', 'dog', 'horse',
-    'motorbike', 'person', 'pottedplant',
-    'sheep', 'sofa', 'train', 'tvmonitor')
+    r'turn_left', r'turn_right', r'turn_straight', r'turn_left_s', r'turn_right_s')
 
 # for making bounding boxes pretty
 COLORS = ((255, 0, 0, 128), (0, 255, 0, 128), (0, 0, 255, 128),

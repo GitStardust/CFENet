@@ -56,16 +56,16 @@ optimizer = dict(type='SGD', momentum=0.9, weight_decay=0.0005)
 
 dataset = dict(
     VOC = dict(
-        train_sets = [('2007', 'trainval'), ('2012', 'trainval')],
+        train_sets = [('2007', 'trainval')],
         eval_sets = [('2007', 'test')],
         ),
     COCO = dict(
-        train_sets = [('2014', 'train'), ('2014', 'valminusminival')],
-        eval_sets = [('2014', 'minival')],
-        test_sets = [('2015', 'test-dev')]
+        train_sets = [('2017', 'train'), ('2017', 'valminusminival')],
+        eval_sets = [('2017', 'minival')],
+        test_sets = [('2017', 'test-dev')],
+        )
     )
-)
 import os
 home = os.path.expanduser("~")
-VOCroot = os.path.join(home,"data/VOCdevkit/")
-COCOroot = os.path.join(home,"data/coco/")
+VOCroot = os.path.join(home,"Desktop/mmdetection/data/VOCdevkit/")
+COCOroot = os.path.join(home,"data/cdet/roadmark/roadmark_0929_littlerotate_voc/coco2017")

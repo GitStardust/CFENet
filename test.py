@@ -139,6 +139,7 @@ if __name__ == '__main__':
     _Dataloader_function = Dataloader_function[args.dataset]
     testset = _Dataloader_function(cfg.COCOroot if args.dataset == 'COCO' else cfg.VOCroot,
                                    getattr(cfg.dataset, args.dataset)['eval_sets'], # change to test_sets for MS-COCO if want test-dev
+                                   # getattr(cfg.dataset, args.dataset)['test_sets'], # change to test_sets for MS-COCO if want test-dev
                                    None)
     if cfg.test_cfg.cuda:
         net = net.cuda()

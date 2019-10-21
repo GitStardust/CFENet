@@ -30,14 +30,16 @@ args = parser.parse_args()
 if args.tensorboard:
     from logger import Logger
     date = time.strftime("%m_%d_%H_%M") + '_log'
-    log_path = './' + date
+    log_path = '../trained_model/CFENet/log/' + date
     if os.path.exists(log_path):
         shutil.rmtree(log_path)
     os.makedirs(log_path)
     logger = Logger(log_path)
 global cfg
 cfg = Config.fromfile(args.config)
-anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format(args.dataset, cfg.model.input_size)]
+# anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format(args.dataset, cfg.model.input_size)]
+anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format("MobileNet", cfg.model.input_size)]
+# anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format(args.dataset, "512")]
 num_classes = getattr(cfg.model.num_classes, args.dataset)
 Dataloader_function = {'VOC': VOCDetection, 'COCO': COCODetection}
 net = build_net('train', 
@@ -82,13 +84,15 @@ criterion = MultiBoxLoss(num_classes,
                          encode_target = cfg.loss.encode_target)
 
 priorbox = PriorBox(anchor_config)
+print("feature_maps:\n",anchor_config['feature_maps'])
 with torch.no_grad():
     priors = priorbox.forward()
     if cfg.train_cfg.cuda:
         priors = priors.cuda()
 
 def adjust_learning_rate(optimizer, gamma, epoch, step_index, iteration, epoch_size):
-    if epoch <= 5:
+    # if epoch <= 5:
+    if epoch <= cfg.train_cfg.warmup:
         lr = cfg.train_cfg.end_lr + (cfg.train_cfg.init_lr-cfg.train_cfg.end_lr)\
          * iteration / (epoch_size * cfg.train_cfg.warmup)
     else:
@@ -139,6 +143,11 @@ if __name__ == '__main__':
             targets = [anno.cuda() for anno in targets]
         out = net(images)
         optimizer.zero_grad()
+        
+        
+        # print("priors:",priors.shape)
+        # print("targets:",len(targets))
+        
         loss_l, loss_c = criterion(out, priors, targets)
         loss = loss_l + loss_c
         if args.tensorboard:

@@ -186,12 +186,12 @@ class preproc(object):
         labels_o = np.expand_dims(labels_o,1)
         targets_o = np.hstack((boxes_o,labels_o))
 
-        image_t, boxes, labels = _crop(image, boxes, labels)
-        image_t = _distort(image_t)
-        image_t, boxes = _expand(image_t, boxes, self.means, self.p)
-        image_t, boxes = _mirror(image_t, boxes)
+        # image_t, boxes, labels = _crop(image, boxes, labels)
+        # image_t = _distort(image_t)
+        # image_t, boxes = _expand(image_t, boxes, self.means, self.p)
+        # # image_t, boxes = _mirror(image_t, boxes)
         #image_t, boxes = _mirror(image, boxes)
-
+        image_t=image
         height, width, _ = image_t.shape
         image_t = preproc_for_test(image_t, self.resize, self.means)
         boxes = boxes.copy()

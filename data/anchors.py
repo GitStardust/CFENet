@@ -12,8 +12,11 @@ def mk_reg_layer_size(size, num_layer, size_the):
     reg_layer_size = []
     for i in range(num_layer + 1):
         size = math.ceil(size / 2.)
-        if i >= 2:
+        # print(size)
+        # if i >= 2:
+        if i >= 3:
             reg_layer_size += [size]
+            
             if i == num_layer and size_the != 0:
                 reg_layer_size += [size - size_the]
     return reg_layer_size
@@ -61,11 +64,28 @@ VOC_512 = mk_config(512, 512, size_pattern_VOC_512, step_pattern_512, 7, 1)
 
 COCO_300 = mk_config(300, 300, size_pattern_COCO_300, step_pattern_300, 6, 2)
 
-COCO_512 = mk_config(512, 512, size_pattern_COCO_512, step_pattern_512, 7, 1)
+COCO_512 = mk_config(512, 512, size_pattern_COCO_512, step_pattern_512, 7, 2)
+
+
+MobileNet_300=VOC_300 = mk_config(300, 300, size_pattern_VOC_300, step_pattern_300, 6, 1)
+
 
 CFENET_ANCHOR_PARAMS = {
     'VOC_300': VOC_300,
     'COCO_300': COCO_300,
     'VOC_512': VOC_512,
     'COCO_512': COCO_512,
+    "MobileNet_300":MobileNet_300,
 }
+
+def mk_anchors(size, multiscale_size, size_pattern, step_pattern, num_reglayer = 6, param = 2):
+    cfg = dict()
+    cfg['feature_maps'] = reglayer_scale(size, num_reglayer, param if size >= multiscale_size else 0)
+    cfg['min_dim'] = size
+    cfg['steps'] = step_pattern
+    cfg['min_sizes'] = get_scales(multiscale_size, size_pattern[:-1])
+    cfg['max_sizes'] = get_scales(multiscale_size, size_pattern[1:])
+    cfg['aspect_ratios'] = aspect_ratio(num_reglayer)
+    cfg['variance'] = [0.1, 0.2]
+    cfg['clip'] = True
+    return cfg

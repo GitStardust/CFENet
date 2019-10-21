@@ -1,6 +1,10 @@
+import sys
+sys.path.append("../../")
+
 import torch
 import torch.nn as nn
 from senet import *
+from mobilenet import *
 
 class BasicConv(nn.Module):
 
@@ -49,6 +53,9 @@ def get_basemodel(basename):
     if basename == 'seresnet50':
         base = se_resnet50(1000, pretrained='imagenet')
         return base
+    if basename=="mobilenet":
+        base=make_moiblenet()
+        return nn.ModuleList(base)
 
 class CFEM(nn.Module):
 
@@ -93,6 +100,8 @@ class CFEM(nn.Module):
         x2 = self.cfem_b[2](x2)
         x2 = self.cfem_b[3](x2)
         x2 = self.cfem_b[4](x2)
+
+        # print(" CFEM: x1,x2:\n{}\t{}".format(x1.shape, x2.shape))
 
         out = torch.cat([x1, x2], 1)
 

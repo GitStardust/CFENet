@@ -1,0 +1,305 @@
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_vgg16.py -m=weights/CFENet_VOC_size300_netvgg_epoch2.pth
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [03:05<00:00, 30.93it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.8976
+AP for turn_right = 0.8734
+AP for turn_straight = 0.8954
+AP for turn_left_s = 0.8980
+AP for turn_right_s = 0.9062
+Mean AP = 0.8941
+~~~~~~~~
+Results:
+0.898
+0.873
+0.895
+0.898
+0.906
+0.894
+~~~~~~~~
+--------------------------------------------------------------
+Results computed with the **unofficial** Python eval code.
+Results should be very close to the official MATLAB eval code.
+Recompute with `./tools/reval.py --matlab ...` for your paper.
+-- Thanks, The Management
+--------------------------------------------------------------
+Detect time per image: 0.015s
+Nms time per image: 0.000s
+Total time per image: 0.015s
+FPS: 65.223 fps
+
+
+
+
+
+
+
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_vgg16.py -m=weights/CFENet_VOC_size300_netvgg_epoch5.pth
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [03:05<00:00, 30.93it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.9048
+AP for turn_right = 0.9058
+AP for turn_straight = 0.9044
+AP for turn_left_s = 0.9053
+AP for turn_right_s = 0.9079
+Mean AP = 0.9057
+~~~~~~~~
+Results:
+0.905
+0.906
+0.904
+0.905
+0.908
+0.906
+~~~~~~~~
+
+--------------------------------------------------------------
+Results computed with the **unofficial** Python eval code.
+Results should be very close to the official MATLAB eval code.
+Recompute with `./tools/reval.py --matlab ...` for your paper.
+-- Thanks, The Management
+--------------------------------------------------------------
+Detect time per image: 0.015s
+Nms time per image: 0.000s
+Total time per image: 0.015s
+FPS: 65.641 fps
+
+
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_vgg16.py -m=weights/CFENet_VOC_size300_netvgg_epoch20.pth
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [01:25<00:00, 67.05it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.9041
+AP for turn_right = 0.9046
+AP for turn_straight = 0.9054
+AP for turn_left_s = 0.9060
+AP for turn_right_s = 0.9080
+Mean AP = 0.9056
+~~~~~~~~
+Results:
+0.904
+0.905
+0.905
+0.906
+0.908
+0.906
+~~~~~~~~
+
+
+
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_vgg16.py -m=weights/Final_CFENet_VOC_300_vgg.pth -d=VOC                            _prepare_arterial channels:
+[1024, 1024, 512, 256, 256, 256]
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [01:24<00:00, 67.85it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.9012
+AP for turn_right = 0.9042
+AP for turn_straight = 0.9049
+AP for turn_left_s = 0.9063
+AP for turn_right_s = 0.9078
+Mean AP = 0.9049
+~~~~~~~~
+Results:
+0.901
+0.904
+0.905
+0.906
+0.908
+0.905
+~~~~~~~~
+
+
+
+
+
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_mobilenet.py -m=weights/CFENet_VOC_size300_netmobilenet_epoch6.pth -d=VOC
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [01:22<00:00, 70.01it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.9037
+AP for turn_right = 0.9057
+AP for turn_straight = 0.9037
+AP for turn_left_s = 0.9053
+AP for turn_right_s = 0.9080
+Mean AP = 0.9053
+~~~~~~~~
+Results:
+0.904
+0.906
+0.904
+0.905
+0.908
+0.905
+~~~~~~~~
+
+--------------------------------------------------------------
+Results computed with the **unofficial** Python eval code.
+Results should be very close to the official MATLAB eval code.
+Recompute with `./tools/reval.py --matlab ...` for your paper.
+-- Thanks, The Management
+--------------------------------------------------------------
+Detect time per image: 0.014s
+Nms time per image: 0.000s
+Total time per image: 0.014s
+FPS: 70.627 fps
+
+##修改成DeConv层
+
+RuntimeError: CUDA out of memory. Tried to allocate 100.00 MiB (GPU 0; 10.76 GiB total capacity; 222.59 MiB already allocated; 36.94 MiB free; 1.41 MiB cached)
+rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_mobilenet.py -m=weights/CFENet_VOC_size300_netmobilenet_epoch2.pth -d=VOC
+Finished loading model!
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [01:20<00:00, 71.07it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.8130
+AP for turn_right = 0.8162
+AP for turn_straight = 0.8117
+AP for turn_left_s = 0.8130
+AP for turn_right_s = 0.9073
+Mean AP = 0.8322
+~~~~~~~~
+Results:
+0.813
+0.816
+0.812
+0.813
+0.907
+0.832
+~~~~~~~~
+
+
+修改为reshape层
+
+]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.8112
+AP for turn_right = 0.8152
+AP for turn_straight = 0.8079
+AP for turn_left_s = 0.8163
+AP for turn_right_s = 0.9067
+Mean AP = 0.8315
+~~~~~~~~
+Results:
+0.811
+0.815
+0.808
+0.816
+0.907
+0.831
+~~~~~~~~
+
+
+
+去掉CFEM1*7卷积
+
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [02:30<00:00, 38.26it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.9040
+AP for turn_right = 0.9053
+AP for turn_straight = 0.8153
+AP for turn_left_s = 0.9047
+AP for turn_right_s = 0.9062
+Mean AP = 0.8871
+~~~~~~~~
+Results:
+0.904
+0.905
+0.815
+0.905
+0.906
+0.887
+
+
+
+使用mobilenet 19*19 prior box
+
+
+
+=> Total 5743 images to test.
+Begin to evaluate
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [01:20<00:00, 71.78it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.6993
+AP for turn_right = 0.6415
+AP for turn_straight = 0.5967
+AP for turn_left_s = 0.7177
+AP for turn_right_s = 0.7662
+Mean AP = 0.6843
+~~~~~~~~
+Results:
+0.699
+0.642
+0.597
+0.718
+0.766
+0.684
+~~~~~~~~
+
