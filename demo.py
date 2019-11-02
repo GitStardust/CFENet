@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description='CFENet Testing')
 parser.add_argument('-c', '--config', default='configs/cfenet300_vgg16.py', type=str)
 parser.add_argument('-f', '--directory', default='imgs/', help='the path to demo images')
 parser.add_argument('-m', '--trained_model', default=None, type=str, help='Trained state_dict file path to open')
-parser.add_argument('--video', default=False, type=bool, help='videofile mode')
+parser.add_argument('--video', default="", type=str, help='videofile mode')
 parser.add_argument('--cam', default=-1, type=int, help='camera device id')
 parser.add_argument('--show', action='store_true', help='Whether to display the images')
 #add
@@ -117,7 +117,8 @@ if cam >= 0:
     video_path = './cam'
 if video:
     while True:
-        video_path = input('Please enter video path: ')
+        # video_path = input('Please enter video path: ')
+        video_path = video
         capture = cv2.VideoCapture(video_path)
         if capture.isOpened():
             break
@@ -125,8 +126,9 @@ if video:
             print('No file!')
 if cam >= 0 or video:
     video_name = os.path.splitext(video_path)
+    print("video_name:",video_name)
     fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-    out_video = cv2.VideoWriter(video_name[0] + '_m2det.mp4', fourcc, capture.get(cv2.CAP_PROP_FPS), (int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    out_video = cv2.VideoWriter(video_name[0] + '_CFENet.mp4', fourcc, capture.get(cv2.CAP_PROP_FPS), (int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 im_fnames = sorted((fname for fname in os.listdir(im_path) if os.path.splitext(fname)[-1] == '.jpg'))
 im_fnames = (os.path.join(im_path, fname) for fname in im_fnames)
 im_iter = iter(im_fnames)
@@ -154,6 +156,8 @@ while True:
     boxes, scores = detector.forward(out, priors)
     boxes = (boxes[0]*scale).cpu().numpy()
     scores = scores[0].cpu().numpy()
+    print("scores：\t",scores)
+    print("boxes：\t",boxes)
     allboxes = []
     for j in range(1, cfg.model.num_classes.VOC):
         inds = np.where(scores[:,j] > cfg.test_cfg.score_threshold)[0]
@@ -175,28 +179,28 @@ while True:
         boxes = allboxes[:,:4]
         scores = allboxes[:,4]
         cls_inds = allboxes[:,5]
-        print("fname:",fname.split("/")[-1].split('.')[0])
+        # print("fname:",fname.split("/")[-1].split('.')[0])
         print('\n'.join(['pos:{}, ids:{}, score:{:.3f}'.format('(%.1f,%.1f,%.1f,%.1f)' % (o[0],o[1],o[2],o[3]) \
                 ,labels[int(oo)],ooo) for o,oo,ooo in zip(boxes,cls_inds,scores)]))
         fps = 1.0 / float(loop_time) if cam >= 0 or video else -1
-        im2show = draw_detection(image, boxes, scores, cls_inds, fps)
+        image = draw_detection(image, boxes, scores, cls_inds, fps)
         # print bbox_pred.shape, iou_pred.shape, prob_pred.shape
 
-        if im2show.shape[0] > 1100:
-            im2show = cv2.resize(im2show,
-                                 (int(1000. * float(im2show.shape[1]) / im2show.shape[0]), 1000))
-        if args.show:
-            cv2.imshow('test', im2show)
-            if cam < 0 and not video:
-                cv2.waitKey(1000)
-            else:
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    cv2.destroyAllWindows()
-                    out_video.release()
-                    capture.release()
-                    break
+        if image.shape[0] > 1100:
+            image = cv2.resize(image,
+                                 (int(1000. * float(image.shape[1]) / image.shape[0]), 1000))
+    if args.show:
+        cv2.imshow('test', image)
         if cam < 0 and not video:
-            cv2.imwrite('{}_CFENet.jpg'.format(fname.split('.')[0]), im2show)
-            # print("im:\n",im2show.shape)
+            cv2.waitKey(1000)
         else:
-            out_video.write(im2show)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                out_video.release()
+                capture.release()
+                break
+    if cam < 0 and not video:
+        cv2.imwrite('{}_CFENet.jpg'.format(fname.split('.')[0]), image)
+        # print("im:\n",image.shape)
+    else:
+        out_video.write(image)

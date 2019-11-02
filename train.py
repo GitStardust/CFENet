@@ -41,13 +41,20 @@ cfg = Config.fromfile(args.config)
 anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format("MobileNet", cfg.model.input_size)]
 # anchor_config = CFENET_ANCHOR_PARAMS['{}_{}'.format(args.dataset, "512")]
 num_classes = getattr(cfg.model.num_classes, args.dataset)
+print("\n num_classes:\t",num_classes)
 Dataloader_function = {'VOC': VOCDetection, 'COCO': COCODetection}
 net = build_net('train', 
                 cfg = cfg.model, 
                 num_classes = num_classes)
+
+print("net:\n",net)
+
 if cfg.model.resume_net:
     if cfg.model.backbone == 'vgg':
         net.init_model(cfg.model.pretrained)
+    elif cfg.model.backbone == 'mobilenet':
+        net.init_model(cfg.model.pretrained)
+        # pass
     elif cfg.model.backbone == 'seresnet50':
         pass
 else:

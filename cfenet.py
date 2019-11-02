@@ -26,11 +26,23 @@ class CFENet(nn.Module):
         self._prepare_lateral()
         self._prepare_LOC_CONF()
 
+    def conv_dw(self,inp, oup, stride):
+        return nn.Sequential(
+            nn.Conv2d(inp, inp, 3, stride, 1, groups=inp, bias=False),
+            nn.BatchNorm2d(inp),
+            nn.ReLU(inplace=True),
+
+            nn.Conv2d(inp, oup, 1, 1, 0, bias=False),
+            nn.BatchNorm2d(oup),
+            nn.ReLU(inplace=True))
+
     def _prepare_ffb(self, ):
         first_out, second_out, third_out = self.cfg.backbone_out_channels
         self.backbone_out = second_out
-        self.reduce1 = BasicConv(first_out, self.cfe_config['channels'][0] // 2,
-                                 kernel_size=3, stride=1, padding=1)
+        # self.reduce1 = BasicConv(first_out, self.cfe_config['channels'][0] // 2,
+        #                          kernel_size=3, stride=1, padding=1)
+
+        self.reduce1=self.conv_dw(first_out, self.cfe_config['channels'][0] // 2,stride=1)
 
         # self.up_reduce1 = BasicConv(second_out, self.cfe_config['channels'][0] // 2, kernel_size=1)
         self.reduce2 = BasicConv(second_out, self.cfe_config['channels'][1] // 2, kernel_size=1)
@@ -38,8 +50,7 @@ class CFENet(nn.Module):
 
         # s1 = F.upsample(self.up_reduce1(t1), scale_factor=2, mode='bilinear')
         # self.upsample_convT = nn.ConvTranspose2d( self.cfe_config['channels'][0] // 2,\
-                # self.cfe_config['channels'][0] // 2,kernel_size=20,stride=1,padding=0,bias=False)
-
+        # self.cfe_config['channels'][0] // 2,kernel_size=20,stride=1,padding=0,bias=False)
 
     def _prepare_arterial(self, ):
         arterial = list()
@@ -136,15 +147,15 @@ class CFENet(nn.Module):
         # s1=torch.reshape(t1,s0.shape)
         # print("\n s0,s1,s1':\n{}\t{}\t{}".format(s0.shape,self.up_reduce1(t1).shape,s1.shape))
         # s = torch.cat((s0, s1), 1)
-        
+
         # modify
-        s=t0
+        s = t0
         # print("\n s :\n{}\t".format(s.shape))
         sources.append(self.lateral[0](s))
         s0 = self.reduce2(t1)
         x = t1
         for k, v in enumerate(self.arterial):
-            if k== len(self.arterial)-1:
+            if k == len(self.arterial) - 1:
                 pass
             else:
                 x = v(x)
@@ -163,15 +174,15 @@ class CFENet(nn.Module):
 
         # print(" \n sources - - - -> \n")
         # for i in sources:
-            # print(i.shape)
+        # print(i.shape)
         return sources
 
     def init_model(self, base_model_path):
 
-        base_weights = torch.load(base_model_path)
+        # base_weights = torch.load(base_model_path)
         print('Loading base network...')
-        self.base.load_state_dict(base_weights)
-
+        # self.base.load_state_dict(base_weights)
+        
         def weights_init(m):
             for key in m.state_dict():
                 if key.split('.')[-1] == 'weight':
@@ -181,7 +192,8 @@ class CFENet(nn.Module):
                         m.state_dict()[key][...] = 1
                 elif key.split('.')[-1] == 'bias':
                     m.state_dict()[key][...] = 0
-
+        
+        self.base.apply(weights_init)
         print('Initializing weights...')
         self.arterial.apply(weights_init)
         self.lateral.apply(weights_init)
@@ -190,11 +202,12 @@ class CFENet(nn.Module):
         self.conf.apply(weights_init)
         self.reduce1.apply(weights_init)
         self.reduce2.apply(weights_init)
-        
+
         # self.up_reduce1.apply(weights_init)
         self.up_reduce2.apply(weights_init)
 
         # self.upsample_convT.apply(weights_init)
+
     def forward(self, x):
 
         t0, t1 = self.forward_base(x)

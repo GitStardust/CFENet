@@ -1,3 +1,19 @@
+
+train
+
+python3 train.py -c=./configs/cfenet300_mobilenet.py -d=VOC -t=True
+
+eval
+python3 test.py -c=./configs/cfenet300_mobilenet.py -d=VOC -m=./weghts/Final_CFENet_VOC_300_mobilenet.pth
+
+
+
+test
+
+python3 demo.py -c=configs/cfenet300_mobilenet.py -m=weights/Final_CFENet_VOC_300_mobilenet.pth -d=VOC -f=../data/roadmark/train
+
+
+
 rm@rm-Z390-AORUS-PRO-WIFI:~/Desktop/CFENet$ python3 test.py -c=configs/cfenet300_vgg16.py -m=weights/CFENet_VOC_size300_netvgg_epoch2.pth
 Finished loading model!
 => Total 5743 images to test.
@@ -29,6 +45,36 @@ Results:
 Results computed with the **unofficial** Python eval code.
 Results should be very close to the official MATLAB eval code.
 Recompute with `./tools/reval.py --matlab ...` for your paper.
+
+
+
+Begin to evaluate
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5743/5743 [00:52<00:00, 109.66it/s]
+Evaluating detections
+Writing turn_left VOC results file
+Writing turn_right VOC results file
+Writing turn_straight VOC results file
+Writing turn_left_s VOC results file
+Writing turn_right_s VOC results file
+VOC07 metric? Yes
+AP for turn_left = 0.8040
+AP for turn_right = 0.7929
+AP for turn_straight = 0.7108
+AP for turn_left_s = 0.8133
+AP for turn_right_s = 0.8098
+Mean AP = 0.7862
+~~~~~~~~
+Results:
+0.804
+0.793
+0.711
+0.813
+0.810
+0.786
+~~~~~~~~
+
+
+
 -- Thanks, The Management
 --------------------------------------------------------------
 Detect time per image: 0.015s

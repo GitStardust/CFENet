@@ -10,7 +10,7 @@ import torch.nn as nn
 import torch.backends.cudnn as cudnn
 import torchvision.models as models
 from torch.autograd import Variable
-
+from thop import profile
 
 class MobileNet(nn.Module):
     def __init__(self):
@@ -50,10 +50,13 @@ class MobileNet(nn.Module):
             conv_dw(512, 512, 1),
             conv_dw(512, 1024, 2),
             conv_dw(1024, 1024, 1),
-            # nn.AvgPool2d(7),
+            nn.AvgPool2d(7),
+            # nn.Conv2d(1024, 512, 3, 1, 1, groups=512, bias=False),
+            # nn.Conv2d(4, 8, 3, 1, 1, groups=1, bias=False),
+            # nn.Conv2d(4, 100, 3, 1, 1, groups=2, bias=False),
         )
 
-        # self.fc = nn.Linear(1024, 1000)
+        self.fc = nn.Linear(1024, 1000)
 
     # 网络的前向过程
     def forward(self, x):
@@ -106,17 +109,16 @@ def make_moiblenet():
         conv_dw(128, 128, 1),
         conv_dw(128, 256, 2),
         conv_dw(256, 256, 1),
-        # conv_dw(256, 512, 1),
         conv_dw(256, 512, 2),
         conv_dw(512, 512, 1),
         conv_dw(512, 512, 1),
         conv_dw(512, 512, 1),
         conv_dw(512, 512, 1),
-        
         conv_dw(512, 512, 1),
         conv_dw(512, 1024, 2),
         conv_dw(1024, 1024, 1),
         # nn.AvgPool2d(7),
+
     ]
     return layers
     # self.fc = nn.Linear(1024, 1000)
@@ -124,14 +126,22 @@ def make_moiblenet():
 
 
 if __name__ == '__main__':
-    resnet18 = models.resnet18().cpu()
-    alexnet = models.alexnet().cpu()
-    vgg16 = models.vgg16().cpu()
-    squeezenet = models.squeezenet1_0().cpu()
+    # resnet18 = models.resnet18().cpu()
+    # print(resnet18)
+    # alexnet = models.alexnet().cpu()
+    # vgg16 = models.vgg16().cpu()
+    # squeezenet = models.squeezenet1_0().cpu()
     mobilenet = MobileNet().cpu()
+    print(mobilenet)
 
-    speed(resnet18, 'resnet18')
-    speed(alexnet, 'alexnet')
-    speed(vgg16, 'vgg16')
-    speed(squeezenet, 'squeezenet')
-    speed(mobilenet, 'mobilenet')
+    print('# mobilenet parameters:', sum(param.numel() for param in mobilenet.parameters()))
+    input = torch.randn(1, 3, 224, 224)
+    flops, params = profile(mobilenet, inputs=(input,))
+    print("flops：",flops)
+    print("params：",params)
+
+    # speed(resnet18, 'resnet18')
+    # speed(alexnet, 'alexnet')
+    # speed(vgg16, 'vgg16')
+    # speed(squeezenet, 'squeezenet')
+    # speed(mobilenet, 'mobilenet')
